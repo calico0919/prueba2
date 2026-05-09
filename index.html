@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FocusLearn — Sistema STEAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- SVG DALTONISMO FILTER (from v2) -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden">
+  <filter id="daltonismo-filter">
+    <feColorMatrix type="matrix" values="0.2 0.5 0.3 0 0  0.2 0.5 0.3 0 0  0.2 0.5 0.3 0 0  0 0 0 1 0"/>
+  </filter>
+</svg>
+
+<!-- LANDING -->
+<div id="screen-landing" class="screen active">
+  <div class="bg-blob blob1"></div>
+  <div class="bg-blob blob2"></div>
+  <div class="bg-blob blob3"></div>
+  <div class="landing-content">
+    <div class="logo-mark">
+      <div class="logo-icon">🧠</div>
+      <span class="logo-text">FocusLearn</span>
+    </div>
+    <h1 class="landing-title">Aprende con <span>STEAM</span><br>a tu manera</h1>
+    <p class="landing-sub">Una plataforma educativa adaptativa para niños. Ciencias, Tecnología, Ingeniería, Artes y Matemáticas — diseñada para cada forma de aprender.</p>
+    <div class="steam-chips">
+      <span class="chip chip-s">🔬 Science · <span style="opacity:.75;font-size:13px">Ciencias</span></span>
+      <span class="chip chip-t">💻 Technology · <span style="opacity:.75;font-size:13px">Tecnología</span></span>
+      <span class="chip chip-e">⚙️ Engineering · <span style="opacity:.75;font-size:13px">Ingeniería</span></span>
+      <span class="chip chip-a">🎨 Arts · <span style="opacity:.75;font-size:13px">Artes</span></span>
+      <span class="chip chip-m">📐 Maths · <span style="opacity:.75;font-size:13px">Matemáticas</span></span>
+    </div>
+    <div class="landing-btns">
+      <button class="btn-primary" onclick="showScreen('login')">✨ Get Started · Comenzar</button>
+      <button class="btn-outline" onclick="showScreen('login')">Sign In · Iniciar sesión</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="screen-login" class="screen">
+  <div class="auth-card">
+    <h2>¡Bienvenido de vuelta! 👋</h2>
+    <p>Iniciá sesión para continuar aprendiendo</p>
+    <div class="error-msg" id="login-error">Usuario o contraseña incorrectos</div>
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Continuar con Google
+    </button>
+    <div class="divider">o con email</div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="tu@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" />
+    </div>
+    <button class="btn-full" onclick="handleLogin()">Iniciar sesión</button>
+    <div class="auth-switch">¿No tenés cuenta? <a onclick="showScreen('register')">Crear cuenta</a></div>
+    <div class="auth-switch" style="margin-top:8px"><a onclick="showScreen('landing')">← Volver al inicio</a></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div id="screen-register" class="screen">
+  <div class="auth-card">
+    <h2>Crear cuenta 🚀</h2>
+    <p>Empezá tu viaje de aprendizaje STEAM</p>
+    <div class="error-msg" id="register-error"></div>
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      Registrarse con Google
+    </button>
+    <div class="divider">o con email</div>
+    <div class="form-group">
+      <label>Nombre completo</label>
+      <input type="text" id="reg-name" placeholder="Tu nombre" />
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="tu@email.com" />
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" />
+    </div>
+    <button class="btn-full" onclick="handleRegister()">Crear cuenta</button>
+    <div class="auth-switch">¿Ya tenés cuenta? <a onclick="showScreen('login')">Iniciar sesión</a></div>
+    <div class="auth-switch" style="margin-top:8px"><a onclick="showScreen('landing')">← Volver al inicio</a></div>
+  </div>
+</div>
+
+<!-- CONDITIONS -->
+<div id="screen-conditions" class="screen">
+  <div class="auth-card" style="max-width:640px">
+    <h2>Configurá tu perfil 🎯</h2>
+    <p>Esto nos ayuda a adaptar la plataforma para vos. Podés seleccionar más de una opción o continuar sin seleccionar ninguna.</p>
+    <div class="condition-title">Trastornos de aprendizaje</div>
+    <div class="condition-grid">
+      <label class="condition-item"><input type="checkbox" value="autismo" /><span>🧩 Autismo</span></label>
+      <label class="condition-item"><input type="checkbox" value="down" /><span>💛 Síndrome de Down</span></label>
+      <label class="condition-item"><input type="checkbox" value="aacc" /><span>⭐ Altas capacidades</span></label>
+      <label class="condition-item"><input type="checkbox" value="retraso-madurativo" /><span>🌱 Retraso madurativo</span></label>
+      <label class="condition-item"><input type="checkbox" value="dislexia" /><span>📖 Dislexia</span></label>
+      <label class="condition-item"><input type="checkbox" value="otros" /><span>➕ Otros</span></label>
+    </div>
+    <div class="condition-title">Trastornos de percepción</div>
+    <div class="condition-grid">
+      <label class="condition-item"><input type="checkbox" value="daltonismo" /><span>🎨 Daltonismo</span></label>
+      <label class="condition-item"><input type="checkbox" value="baja-vision" /><span>👁️ Ceguera / baja visión</span></label>
+    </div>
+    <button class="btn-full" style="margin-top:24px" onclick="handleConditions()">Continuar →</button>
+  </div>
+</div>
+
+<!-- EVALUATION -->
+<div id="screen-evaluation" class="screen">
+  <div class="auth-card" style="max-width:560px">
+    <h2>Evaluación inicial 📊</h2>
+    <p>Respondé estas preguntas para personalizar tu experiencia</p>
+    <div class="eval-progress" id="eval-progress"></div>
+    <div id="eval-content"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="screen-app" class="screen">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">🧠</div>
+        <span class="sidebar-logo-text">FocusLearn</span>
+      </div>
+      <button class="collapse-btn" onclick="toggleSidebar()">☰</button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showPage('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Inicio</span>
+      </div>
+      <div class="nav-item" onclick="showPage('profile')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Perfil</span>
+      </div>
+      <div class="nav-item" onclick="showPage('achievements')">
+        <span class="nav-icon">🏆</span>
+        <span class="nav-label">Logros</span>
+      </div>
+      <div class="nav-item" onclick="showPage('settings')">
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Ajustes</span>
+      </div>
+    </nav>
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">?</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-name">Cargando...</div>
+        <div class="user-email" id="sidebar-email">...</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">¡Hola! 👋</div>
+      <div class="topbar-actions">
+        <!-- DARK MODE TOGGLE (from v2) -->
+        <button class="dark-btn" id="dark-btn" title="Modo oscuro" onclick="toggleDarkMode()">🌙</button>
+        <div class="user-avatar" id="topbar-avatar" style="cursor:pointer" onclick="showPage('profile')">?</div>
+      </div>
+    </div>
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+      <div class="welcome-banner">
+        <div>
+          <h2 id="welcome-name">¡Bienvenido!</h2>
+          <p>Elegí un área STEAM para empezar.</p>
+        </div>
+      </div>
+
+      <div class="modules-grid" id="modules-grid"></div>
+
+      <div class="mission-card">
+        <div class="mission-icon">⭐</div>
+        <div class="mission-info">
+          <div class="mission-title">Misión diaria</div>
+          <div class="mission-desc" id="mission-desc">Completá 1 actividad de Science</div>
+        </div>
+        <button class="mission-btn" id="mission-claim-btn" onclick="claimDailyMission()">+ 50 XP</button>
+      </div>
+    </div>
+
+    <!-- MODULE PAGE (dynamically filled) -->
+    <div id="page-module" class="page">
+      <div id="module-content"></div>
+    </div>
+
+    <!-- CONTENT VIEW (mode content) -->
+    <div id="page-content" class="page">
+      <div id="content-view"></div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div id="page-profile" class="page">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar">?</div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="profile-name" id="profile-name">Cargando...</div>
+          </div>
+          <div class="profile-email" id="profile-email">...</div>
+          <div class="profile-stats" id="profile-stats"></div>
+        </div>
+      </div>
+      <div class="section-title">Niveles STEAM</div>
+      <div class="steam-levels" id="steam-levels"></div>
+      <div class="section-title">Progreso detallado</div>
+      <div id="profile-progress"></div>
+    </div>
+
+    <!-- ACHIEVEMENTS PAGE -->
+    <div id="page-achievements" class="page">
+      <div class="section-title">🏆 Logros</div>
+      <div class="achievements-grid" id="achievements-grid"></div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="page-settings" class="page">
+      <div class="settings-section">
+        <div class="settings-section-title">Accesibilidad visual</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Modo Daltonismo</div>
+            <div class="setting-desc">Ajusta los colores para mayor visibilidad</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-daltonismo" onchange="applyAccessibility()" />
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Alto contraste</div>
+            <div class="setting-desc">Aumenta el contraste para facilitar la lectura</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-contraste" onchange="applyAccessibility()" />
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Reducir estímulos visuales</div>
+            <div class="setting-desc">Desactiva animaciones y efectos</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-estimulos" onchange="applyAccessibility()" />
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Apariencia</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Modo oscuro</div>
+            <div class="setting-desc">Cambia a tema oscuro para menor brillo</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-darkmode" onchange="applyDarkMode()" />
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Velocidad de contenido</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Velocidad lenta</div>
+            <div class="setting-desc">Presenta el contenido más despacio</div>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-velocidad" onchange="saveSettings()" />
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Cuenta</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-name">Cerrar sesión</div>
+            <div class="setting-desc">Salir de tu cuenta actual</div>
+          </div>
+          <button onclick="logout()" style="background:var(--accent);color:white;border:none;padding:10px 18px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- MINECRAFT ACHIEVEMENT TOAST -->
+<div id="mc-achievement-toast">
+  <div class="mc-ach-icon" id="mc-ach-icon">🏆</div>
+  <div>
+    <div class="mc-ach-label">¡Logro desbloqueado!</div>
+    <div class="mc-ach-name" id="mc-ach-name">Nombre del logro</div>
+  </div>
+</div>
+
+<!-- UPLOAD MODAL -->
+<div class="modal-overlay" id="upload-modal">
+  <div class="modal">
+    <h3>📁 Subir material</h3>
+    <p>Cargá material adicional para tu hijo. El sistema lo adaptará automáticamente a los modos Visual, Auditivo, Lectura/Escritura y Videojuegos.</p>
+    <div style="margin-top:20px;border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;color:var(--text-muted)">
+      <div style="font-size:40px;margin-bottom:8px">📂</div>
+      <div style="font-weight:700;">Arrastrá o seleccioná un archivo</div>
+      <div style="font-size:13px;margin-top:4px">PDF, imágenes, audio, video</div>
+      <input type="file" style="display:none" id="file-input" />
+      <button onclick="document.getElementById('file-input').click()" style="margin-top:16px;background:var(--primary);color:white;border:none;padding:10px 20px;border-radius:8px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Seleccionar archivo</button>
+    </div>
+    <div class="modal-actions">
+      <button onclick="closeModal('upload-modal')" style="flex:1;padding:14px;border:2px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Cancelar</button>
+      <button onclick="handleFileUpload()" style="flex:1;padding:14px;background:var(--primary);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;">Subir material</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- JavaScript modules -->
+<script src="js/core.js"></script>
+<script src="js/store.js"></script>
+<script src="js/progression.js"></script>
+<script src="js/steam-v2.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/demo.js"></script>
+<script src="js/gates.js"></script>
+<script src="js/overrides.js"></script>
+</body>
+</html>
